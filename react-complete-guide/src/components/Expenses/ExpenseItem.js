@@ -1,20 +1,30 @@
 import ExpenseDate from "./ExpenseDate";
 import Card from "../Common/Card";
+import {useState} from "react";
+
+
 import "./ExpenseItem.css";
 
 function ExpenseItem(props) {
-  const expenseTitle = props.title;
-  const expenseAmount = props.amount;
+    const [title, setTitle] = useState(props.title);
 
-  return (
-    <Card className='expense-item'>
-      <ExpenseDate expenseDate={props.expenseDate} />
-      <div className='expense-item__description'>
-        <h2>{expenseTitle}</h2>
-        <div className='expense-item__price'>{expenseAmount} </div>
-      </div>
-    </Card>
-  );
+
+    const expenseAmount = props.amount;
+
+    const updateExpenseDataHandler = () => {
+        setTitle('updated value')
+    }
+
+    return (
+        <Card className='expense-item'>
+            <ExpenseDate expenseDate={props.expenseDate}/>
+            <div className='expense-item__description'>
+                <h2>{title}</h2>
+                <div className='expense-item__price'>{expenseAmount} </div>
+                <button onClick={updateExpenseDataHandler}>Update</button>
+            </div>
+        </Card>
+    );
 }
 
 export default ExpenseItem;
