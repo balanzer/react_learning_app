@@ -3,8 +3,8 @@ import {useState} from "react";
 
 const ExpenseForm = (props) => {
 
-    const [expenseData, setExpenseData] = useState({title: '', amount: '', expenseDate: ''})
-
+    const [expenseData, setExpenseData] = useState({title: '', amount: '', date: ''})
+    const [errorMessage, setErrorMessage] = useState("")
 
     const titleChangeHandler = (event) => {
         setExpenseData((prevSate) => {
@@ -18,24 +18,45 @@ const ExpenseForm = (props) => {
     }
     const dateChangeHandler = (event) => {
         setExpenseData((prevSate) => {
-            return {...prevSate, expenseDate: event.target.value}
+            return {...prevSate, date: event.target.value}
         });
     }
 
+    const isValidDate = (date) => {
+        return (new Date(date) !== "Invalid Date") && !isNaN(new Date(date));
+    }
+
+
     const expenseSubmit = (event) => {
         event.preventDefault();
-        const newExpenseData = {
-            title: expenseData.title,
-            amount: expenseData.amount,
-            expenseDate: new Date(expenseData.expenseDate)
+
+        if (!isValidDate(expenseData.date)) {
+            setErrorMessage("Error : Invalid Date");
+            return;
         }
-        //console.log('new data : ' + JSON.stringify(expenseData));
-        props.onSaveExpenseData(newExpenseData);
-        setExpenseData({title: '', amount: '', expenseDate: ''});
+        if (expenseData.title.trim().length == 0) {
+            setErrorMessage("Error : Invalid Title");
+            return;
+        } else if (expenseData.amount.trim().length == 0) {
+            setErrorMessage("Error : Invalid Amount");
+            return;
+        } else {
+            const newExpenseData = {
+                title: expenseData.title,
+                amount: parseFloat(expenseData.amount).toFixed(2),
+                date: new Date(expenseData.date)
+            }
+            console.log('adding new data : ' + JSON.stringify(expenseData));
+            props.onSaveExpenseData(newExpenseData);
+            setExpenseData({title: '', amount: '', date: ''});
+        }
+
+
     }
 
     return (<form onSubmit={expenseSubmit}>
             <div className="new-expense__controls">
+
                 <div className="new-expense__control"><label>Title</label><input type='text' value={expenseData.title}
                                                                                  onChange={titleChangeHandler}/></div>
                 <div className="new-expense__control"><label>Amount</label><input type='number' min="0.01" step="0.01"
@@ -43,13 +64,16 @@ const ExpenseForm = (props) => {
                                                                                   onChange={amountChangeHandler}/>
                 </div>
                 <div className="new-expense__control"><label>Date</label><input type='date' min="2019-01-01"
-                                                                                value={expenseData.expenseDate}
+                                                                                value={expenseData.date}
                                                                                 max="2022-12-31"
                                                                                 onChange={dateChangeHandler}/>
                 < /div>
+
                 <div className="new-expense__actions">
                     <button type="submit">Add</button>
+                    <div className="new-expense__control"><label>{errorMessage}</label></div>
                 </div>
+
             </div>
         </form>
     );
