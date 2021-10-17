@@ -3,8 +3,10 @@ import {useState} from "react";
 
 const ExpenseForm = (props) => {
 
-    const [expenseData, setExpenseData] = useState({title: '', amount: '', date: ''})
-    const [errorMessage, setErrorMessage] = useState("")
+    const [expenseData, setExpenseData] = useState({title: '', amount: '', date: ''});
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const [showExpenseForm, setShowExpenseForm] = useState(false);
 
     const titleChangeHandler = (event) => {
         setExpenseData((prevSate) => {
@@ -36,10 +38,10 @@ const ExpenseForm = (props) => {
         }
         if (expenseData.title.trim().length == 0) {
             setErrorMessage("Error : Invalid Title");
-            return;
+
         } else if (expenseData.amount.trim().length == 0) {
             setErrorMessage("Error : Invalid Amount");
-            return;
+
         } else {
             const newExpenseData = {
                 title: expenseData.title,
@@ -49,13 +51,29 @@ const ExpenseForm = (props) => {
             console.log('adding new data : ' + JSON.stringify(expenseData));
             props.onSaveExpenseData(newExpenseData);
             setExpenseData({title: '', amount: '', date: ''});
+            hideExpenseFormHandler();
         }
 
+    }
+    const showExpenseFormHandler = () => {
+        setShowExpenseForm(true);
+    };
+    const hideExpenseFormHandler = () => {
+        setShowExpenseForm(false);
+    };
 
+
+    const hideFormContent = () => {
+        return (<div className="new-expense__actions">
+            <button type="button" onClick={showExpenseFormHandler}>Add New Expense</button>
+        </div>);
     }
 
-    return (<form onSubmit={expenseSubmit}>
+
+    const showFormContent = () => {
+        return (<form onSubmit={expenseSubmit}>
             <div className="new-expense__controls">
+
 
                 <div className="new-expense__control"><label>Expense Type</label><input type='text'
                                                                                         value={expenseData.title}
@@ -73,12 +91,19 @@ const ExpenseForm = (props) => {
                 < /div>
 
                 <div className="new-expense__actions">
+                    <button type="button" onClick={hideExpenseFormHandler}>Cancel</button>
                     <button type="submit">Add Expense</button>
                     <div className="new-expense__control"><label>{errorMessage}</label></div>
                 </div>
 
+
             </div>
-        </form>
+        </form>);
+    }
+
+    return (<div>
+            {showExpenseForm ? showFormContent() : hideFormContent()}
+        </div>
     );
 }
 
