@@ -57,20 +57,23 @@ const ExpenseForm = (props) => {
     return (<form onSubmit={expenseSubmit}>
             <div className="new-expense__controls">
 
-                <div className="new-expense__control"><label>Title</label><input type='text' value={expenseData.title}
-                                                                                 onChange={titleChangeHandler}/></div>
-                <div className="new-expense__control"><label>Amount</label><input type='number' min="0.01" step="0.01"
-                                                                                  value={expenseData.amount}
-                                                                                  onChange={amountChangeHandler}/>
+                <div className="new-expense__control"><label>Expense Type</label><input type='text'
+                                                                                        value={expenseData.title}
+                                                                                        onChange={titleChangeHandler}/>
                 </div>
-                <div className="new-expense__control"><label>Date</label><input type='date' min="2019-01-01"
-                                                                                value={expenseData.date}
-                                                                                max="2022-12-31"
-                                                                                onChange={dateChangeHandler}/>
+                <div className="new-expense__control"><label>Amount($)</label><input type='number' min="0.01"
+                                                                                     step="0.01"
+                                                                                     value={expenseData.amount}
+                                                                                     onChange={amountChangeHandler}/>
+                </div>
+                <div className="new-expense__control"><label>Expense Date</label><input type='date' min="2019-01-01"
+                                                                                        value={expenseData.date}
+                                                                                        max="2022-12-31"
+                                                                                        onChange={dateChangeHandler}/>
                 < /div>
 
                 <div className="new-expense__actions">
-                    <button type="submit">Add</button>
+                    <button type="submit">Add Expense</button>
                     <div className="new-expense__control"><label>{errorMessage}</label></div>
                 </div>
 
