@@ -13,8 +13,9 @@ const ExpensesList = props => {
     }
 
     return <ul className="expenses-list">
-        <h3 className="expenses-list__fallback">Expenses Count: {props.items.length}</h3>
-        <h3 className="expenses-list__fallback">Total Spent : ${calculateTotal(props.items)}</h3>
+        <h3 className="expenses-list__fallback">Total Expenses: {props.items.length}, Money Spent :
+            ${calculateTotal(props.items)}
+        </h3>
         {props.items.map(expense => {
 
             if (!!expense) {
