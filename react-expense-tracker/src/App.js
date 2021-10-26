@@ -1,0 +1,52 @@
+import Expenses from "./components/Expenses/Expenses";
+import NewExpense from "./components/NewExpense/NewExpense";
+import {useState} from "react";
+
+const INITIAL_EXPENSE_STATE = [
+    {
+        id: "e1",
+        title: "Toilet Paper",
+        amount: 94.12,
+        date: new Date(2020, 7, 14),
+    },
+    {id: "e2", title: "New TV", amount: 799.49, date: new Date(2021, 2, 12)},
+    {
+        id: "e3",
+        title: "Car Insurance",
+        amount: 294.67,
+        date: new Date(2021, 2, 28),
+    },
+    {
+        id: "e4",
+        title: "New Desk (Wooden)",
+        amount: 450,
+        date: new Date(2021, 5, 12),
+    },
+];
+
+
+function App() {
+
+    const [expenses, setExpenses] = useState(INITIAL_EXPENSE_STATE)
+
+
+    const addExpenseHandler = (expense) => {
+        if (!!expense && !!expense.title && !!expense.amount && !!expense.date) {
+            console.log('add new expense to state : ' + JSON.stringify(expense));
+            setExpenses((existingData) => {
+                return [expense, ...existingData]
+            });
+        } else {
+            console.log('invalid data - not added');
+        }
+    }
+
+    return (
+        <div>
+            <NewExpense onAddingNewExpense={addExpenseHandler}></NewExpense>
+            <Expenses expenses={expenses}/>
+        </div>
+    );
+}
+
+export default App;
